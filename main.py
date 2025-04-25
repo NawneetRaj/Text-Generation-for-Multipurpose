@@ -99,4 +99,4 @@ if st.button("🚀 Generate"):
             if st.button("👎 No"):
                 st.toast("Thanks! We'll keep improving. 💡")
 
-        st.markdown("### Developed by Nawneet Raj")
+st.markdown("### Developed by Nawneet Raj")
