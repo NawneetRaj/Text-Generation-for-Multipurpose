@@ -2,6 +2,9 @@ import streamlit as st
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
 
+# Sidebar for model size
+st.sidebar.title("⚙️ Settings")
+model_size = st.sidebar.selectbox("Select Model Size", ["gpt2", "gpt2-medium", "gpt2-large"])
 
 # Load model and tokenizer
 @st.cache_resource
@@ -12,41 +15,57 @@ def load_model(model_name):
 
 tokenizer, model = load_model(model_size)
 
-# Title & UI
-st.title("✍️ Multipurpose  Text Generator")
-st.markdown("Select a content type, customize, and generate amazing AI-powered text!")
+# Task-based prompt builder
+def build_prompt(task, user_input):
+    if task == "Email":
+        return (
+            "Write a professional email with the following details:\n"
+            f"Subject: {user_input}\n"
+            "Include a proper greeting, body, and closing.\n\nEmail:\n"
+        )
+    elif task == "Essay":
+        return (
+            f"Write a detailed essay on the topic: '{user_input}'.\n"
+            "Include an introduction, body, and conclusion.\n\nEssay:\n"
+        )
+    elif task == "Social Media Post":
+        return (
+            f"Write a catchy and engaging social media post about: '{user_input}'.\n"
+            "Make it fun, use emojis and hashtags.\n\nPost:\n"
+        )
+    elif task == "Story":
+        return (
+            f"Write a short and interesting story about: '{user_input}'.\n\nStory:\n"
+        )
+    elif task == "Poem":
+        return (
+            f"Write a beautiful and meaningful poem about: '{user_input}'.\n\nPoem:\n"
+        )
+    else:  # General Purpose
+        return user_input
 
-# Content type
+# UI
+st.title("✍️ Multipurpose GPT-2 Text Generator")
+st.markdown("Generate Emails, Essays, Social Media Posts, Stories, and Poems with GPT-2")
+
+# Task selection
 task = st.selectbox("Select Generation Type:", [
-    "Essay", "Social Media Post", "Story", "Poem"
+    "Email", "Essay", "Social Media Post", "Story", "Poem", "General Purpose"
 ])
 
-# Prompt templates
-task_prompts = {
-    "Email": "Write a professional email about ",
-    "Essay": "Write an essay on ",
-    "Social Media Post": "Create a social media post about ",
-    "Story": "Write a short story about ",
-    "Poem": "Write a poem on ",
-    "General Purpose": ""
-}
-
+# User input
 user_input = st.text_area("Enter your topic or idea:", "The importance of time", height=100)
-prompt = task_prompts[task] + user_input
+prompt = build_prompt(task, user_input)
 
 # Generation settings
 st.subheader("🎛️ Generation Settings")
-col1, col2, col3, col4 = st.columns(4)
+col1, col2 = st.columns(2)
 with col1:
     max_len = st.slider("Max Length", 20, 300, 100)
 with col2:
-    top_k = st.slider("Top-K", 10, 100, 50)
-with col3:
-    top_p = st.slider("Top-P", 0.1, 1.0, 0.95)
-with col4:
     temperature = st.slider("Temperature", 0.1, 1.5, 1.0)
 
-# Generate button
+# Generate
 if st.button("🚀 Generate"):
     with st.spinner("Generating..."):
         inputs = tokenizer(prompt, return_tensors="pt")
@@ -54,8 +73,6 @@ if st.button("🚀 Generate"):
             inputs["input_ids"],
             max_length=max_len,
             do_sample=True,
-            top_k=top_k,
-            top_p=top_p,
             temperature=temperature,
             num_return_sequences=1
         )
@@ -72,7 +89,7 @@ if st.button("🚀 Generate"):
             mime="text/plain"
         )
 
-        # Feedback
+        # Feedback section
         st.markdown("### 🙌 Was this helpful?")
         col_feedback1, col_feedback2 = st.columns(2)
         with col_feedback1:
@@ -80,4 +97,4 @@ if st.button("🚀 Generate"):
                 st.toast("Thanks for your feedback! 😊")
         with col_feedback2:
             if st.button("👎 No"):
-                st.toast("Thanks! We'll try to improve. 💡")
+                st.toast("Thanks! We'll keep improving. 💡")
