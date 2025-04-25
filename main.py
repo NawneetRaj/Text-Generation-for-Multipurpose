@@ -2,7 +2,7 @@ import streamlit as st
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
 
-# Sidebar for model size
+# Sidebar
 st.sidebar.title("⚙️ Settings")
 model_size = st.sidebar.selectbox("Select Model Size", ["gpt2", "gpt2-medium", "gpt2-large"])
 
@@ -15,13 +15,14 @@ def load_model(model_name):
 
 tokenizer, model = load_model(model_size)
 
-# Task-based prompt builder
-def build_prompt(task, user_input):
+# Prompt builder
+def build_prompt(task, user_input, sender="", receiver="", subject=""):
     if task == "Email":
         return (
-            "Write a professional email with the following details:\n"
-            f"Subject: {user_input}\n"
-            "Include a proper greeting, body, and closing.\n\nEmail:\n"
+            f"Write a professional email from {sender} to {receiver}.\n"
+            f"Subject: {subject}\n"
+            f"Purpose: {user_input}\n"
+            "Include a proper greeting, structured body, and polite closing.\n\nEmail:\n"
         )
     elif task == "Essay":
         return (
@@ -41,21 +42,29 @@ def build_prompt(task, user_input):
         return (
             f"Write a beautiful and meaningful poem about: '{user_input}'.\n\nPoem:\n"
         )
-    else:  # General Purpose
+    else:
         return user_input
 
 # UI
-st.title("✍️ Multipurpose  Text Generator")
+st.title("✍️ Multipurpose GPT-2 Text Generator")
 st.markdown("Generate Emails, Essays, Social Media Posts, Stories, and Poems with GPT-2")
 
-# Task selection
+# Select task
 task = st.selectbox("Select Generation Type:", [
     "Email", "Essay", "Social Media Post", "Story", "Poem", "General Purpose"
 ])
 
-# User input
-user_input = st.text_area("Enter your topic or idea:", "The importance of time", height=100)
-prompt = build_prompt(task, user_input)
+# Input fields
+if task == "Email":
+    st.subheader("📧 Email Details")
+    sender_name = st.text_input("Sender Name", "John Doe")
+    receiver_name = st.text_input("Receiver Name", "Jane Smith")
+    subject = st.text_input("Email Subject", "Request for Meeting")
+    email_description = st.text_area("Brief Description of Email Purpose", "Requesting a meeting to discuss project updates.")
+    prompt = build_prompt(task, email_description, sender=sender_name, receiver=receiver_name, subject=subject)
+else:
+    user_input = st.text_area("Enter your topic or idea:", "The importance of time", height=100)
+    prompt = build_prompt(task, user_input)
 
 # Generation settings
 st.subheader("🎛️ Generation Settings")
@@ -81,22 +90,9 @@ if st.button("🚀 Generate"):
         st.success("✨ Generated Text:")
         st.write(generated_text)
 
-        # Download button
         st.download_button(
             label="📥 Download Text",
             data=generated_text,
             file_name=f"{task.lower().replace(' ', '_')}_generated.txt",
             mime="text/plain"
         )
-
-        # Feedback section
-        st.markdown("### 🙌 Was this helpful?")
-        col_feedback1, col_feedback2 = st.columns(2)
-        with col_feedback1:
-            if st.button("👍 Yes"):
-                st.toast("Thanks for your feedback! 😊")
-        with col_feedback2:
-            if st.button("👎 No"):
-                st.toast("Thanks! We'll keep improving. 💡")
-
-st.markdown("### Developed by Nawneet Raj")
