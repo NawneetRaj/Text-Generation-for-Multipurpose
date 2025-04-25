@@ -2,9 +2,6 @@ import streamlit as st
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
 
-# Sidebar for model size
-st.sidebar.title("⚙️ Settings")
-model_size = st.sidebar.selectbox("Select Model Size", ["gpt2", "gpt2-medium", "gpt2-large"])
 
 # Load model and tokenizer
 @st.cache_resource
@@ -16,12 +13,12 @@ def load_model(model_name):
 tokenizer, model = load_model(model_size)
 
 # Title & UI
-st.title("✍️ Multipurpose GPT-2 Text Generator")
+st.title("✍️ Multipurpose  Text Generator")
 st.markdown("Select a content type, customize, and generate amazing AI-powered text!")
 
 # Content type
 task = st.selectbox("Select Generation Type:", [
-    "Email", "Essay", "Social Media Post", "Story", "Poem", "General Purpose"
+    "Essay", "Social Media Post", "Story", "Poem"
 ])
 
 # Prompt templates
