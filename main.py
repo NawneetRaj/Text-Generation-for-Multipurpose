@@ -46,8 +46,8 @@ def build_prompt(task, user_input, sender="", receiver="", subject=""):
         return user_input
 
 # UI
-st.title("✍️ Multipurpose GPT-2 Text Generator")
-st.markdown("Generate Emails, Essays, Social Media Posts, Stories, and Poems with GPT-2")
+st.title("✍️ Multipurpose Text Generator")
+st.markdown("Generate Emails, Essays, Social Media Posts, Stories, and Poems")
 
 # Select task
 task = st.selectbox("Select Generation Type:", [
@@ -96,3 +96,5 @@ if st.button("🚀 Generate"):
             file_name=f"{task.lower().replace(' ', '_')}_generated.txt",
             mime="text/plain"
         )
+
+st.markdown("Developed by Nawneet Raj")
