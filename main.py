@@ -86,8 +86,8 @@ with st.sidebar:
             ("Arabic", "Bengali", "Bulgarian", "Chinese simplified", "Chinese traditional", "Croatian", "Czech", "Danish", "Dutch", "English", "Estonian", "Finnish", "French", "German", "Greek", "Hebrew", "Hindi", "Hungarian", "Indonesian", "Italian", "Japanese", "Korean", "Latvian", "Lithuanian", "Norwegian", "Polish", "Portuguese", "Romanian", "Russian", "Serbian", "Slovak", "Slovenian", "Spanish", "Swahili", "Swedish", "Thai", "Turkish", "Ukrainian", "Vietnamese"),index=9)
 
     st.header('About Me')
-    st.markdown("[Linkedin](https://www.linkedin.com/in/sanketshinde04/)")
-    st.markdown("[Github](https://github.com/sanketshinde3001)")
+    st.markdown("[Linkedin](https://www.linkedin.com/in/nawneet-raj-01191a254/)")
+    st.markdown("[Github](https://github.com/NawneetRaj)")
 
 # Heading Changes as per our Choices
 st.title(option)    
@@ -290,7 +290,7 @@ text-align: center;
 }
 </style>
 <div class="footer">
-<p>Developed with ❤ by <a style='display: block; text-align: center;' href="https://www.linkedin.com/in/sanketshinde04/" target="_blank">Sanket Shinde</a></p>
+<p>Developed with ❤ by <a style='display: block; text-align: center;' href="https://www.linkedin.com/in/nawneet-raj-01191a254/" target="_blank">Nawneet Raj</a></p>
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
