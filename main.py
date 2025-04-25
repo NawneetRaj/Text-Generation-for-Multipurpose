@@ -45,7 +45,7 @@ def build_prompt(task, user_input):
         return user_input
 
 # UI
-st.title("✍️ Multipurpose GPT-2 Text Generator")
+st.title("✍️ Multipurpose  Text Generator")
 st.markdown("Generate Emails, Essays, Social Media Posts, Stories, and Poems with GPT-2")
 
 # Task selection
@@ -98,3 +98,5 @@ if st.button("🚀 Generate"):
         with col_feedback2:
             if st.button("👎 No"):
                 st.toast("Thanks! We'll keep improving. 💡")
+
+        st.markdown("### Developed by Nawneet Raj")
